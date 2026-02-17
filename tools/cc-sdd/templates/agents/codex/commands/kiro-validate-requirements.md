@@ -116,6 +116,6 @@ Provide output in the language specified in spec.json with:
 **If NO-GO**:
 - Address critical issues identified
 - Re-run `/prompts:kiro-spec-requirements $1` with improvements
-- Re-validate with `/prompts:kiro-spec-validate-requirements $1`
+- Re-validate with `/prompts:kiro-validate-requirements $1`
 
 **Note**: Requirements validation is optional but recommended before proceeding to design.

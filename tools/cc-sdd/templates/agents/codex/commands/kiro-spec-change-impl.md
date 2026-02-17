@@ -136,7 +136,7 @@ Provide brief summary in the language specified in spec.json:
 ### Next Phase: Archive or Validate
 
 **After All Change Tasks Complete**:
-- **Optional**: Run `/prompts:kiro-spec-validate-change-impl $1` to validate change implementation
+- **Optional**: Run `/prompts:kiro-validate-change-impl $1` to validate change implementation
 - Then: Run `/prompts:kiro-spec-archive-change $1` to archive change files and update originals
 
 **Execute specific task(s)**:

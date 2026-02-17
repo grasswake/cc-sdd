@@ -110,6 +110,6 @@ Provide output in the language specified in spec.json with:
 **If NO-GO**:
 - Address critical issues identified
 - Re-run `/kiro:spec-requirements $1` with improvements
-- Re-validate with `/kiro:spec-validate-requirements $1`
+- Re-validate with `/kiro:validate-requirements $1`
 
 **Note**: Requirements validation is optional but recommended before proceeding to design.

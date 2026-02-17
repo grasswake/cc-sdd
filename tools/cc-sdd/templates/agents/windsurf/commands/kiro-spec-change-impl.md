@@ -138,7 +138,7 @@ Provide brief summary in the language specified in spec.json:
 ### Next Phase: Archive or Validate
 
 **After All Change Tasks Complete**:
-- **Optional**: Run `/kiro-spec-validate-change-impl $1` to validate change implementation
+- **Optional**: Run `/kiro-validate-change-impl $1` to validate change implementation
 - Then: Run `/kiro-spec-archive-change $1` to archive change files and update originals
 
 **Execute specific task(s)**:

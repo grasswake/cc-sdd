@@ -143,7 +143,7 @@ Provide brief summary in the language specified in spec.json:
 
 **If Change Design Approved**:
 - Review generated change design at `{{KIRO_DIR}}/specs/$1/change-design.md`
-- **Optional**: Run `/prompts:kiro-spec-validate-change-design $1` for quality review
+- **Optional**: Run `/prompts:kiro-validate-change-design $1` for quality review
 - Then `/prompts:kiro-spec-change-tasks $1` to generate change implementation tasks
 
 **If Modifications Needed**:

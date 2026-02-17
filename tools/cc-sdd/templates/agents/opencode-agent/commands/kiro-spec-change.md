@@ -39,7 +39,7 @@ Show Subagent summary to user, then provide next step guidance:
 
 **If Change Request Approved**:
 - Review generated change request at `{{KIRO_DIR}}/specs/$1/change-request.md`
-- **Optional**: Run `/kiro-spec-validate-change $1` for change request validation
+- **Optional**: Run `/kiro-validate-change $1` for change request validation
 - Then `/kiro-spec-change-design $1` to generate change design with integrated requirements/design
 
 **If Modifications Needed**:

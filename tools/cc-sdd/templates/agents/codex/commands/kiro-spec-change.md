@@ -124,7 +124,7 @@ Provide output in the language specified in spec.json with:
 
 **If Change Request Approved**:
 - Review generated change request at `{{KIRO_DIR}}/specs/$1/change-request.md`
-- **Optional**: Run `/prompts:kiro-spec-validate-change $1` for change request validation
+- **Optional**: Run `/prompts:kiro-validate-change $1` for change request validation
 - Then `/prompts:kiro-spec-change-design $1` to generate change design with integrated requirements/design
 
 **If Modifications Needed**:

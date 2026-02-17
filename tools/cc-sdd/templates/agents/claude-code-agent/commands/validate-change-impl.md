@@ -57,6 +57,6 @@ Show Subagent summary to user, then provide next step guidance:
 **If NO-GO**:
 - Address critical issues (especially regressions)
 - Re-run `/kiro:spec-change-impl $1 [tasks]` for fixes
-- Re-validate with `/kiro:spec-validate-change-impl $1`
+- Re-validate with `/kiro:validate-change-impl $1`
 
 **Note**: Change implementation validation is recommended before archiving to ensure spec alignment and quality.

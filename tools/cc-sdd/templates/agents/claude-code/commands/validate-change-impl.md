@@ -116,4 +116,4 @@ Provide output in the language specified in spec.json with:
 **If NO-GO**:
 - Address critical issues (especially regressions)
 - Re-run `/kiro:spec-change-impl $1 [tasks]` for fixes
-- Re-validate with `/kiro:spec-validate-change-impl $1`
+- Re-validate with `/kiro:validate-change-impl $1`

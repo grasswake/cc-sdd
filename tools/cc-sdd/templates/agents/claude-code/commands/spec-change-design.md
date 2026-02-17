@@ -138,7 +138,7 @@ Provide brief summary in the language specified in spec.json:
 
 **If Change Design Approved**:
 - Review generated change design at `{{KIRO_DIR}}/specs/$1/change-design.md`
-- **Optional**: Run `/kiro:spec-validate-change-design $1` for quality review
+- **Optional**: Run `/kiro:validate-change-design $1` for quality review
 - Then `/kiro:spec-change-tasks $1` to generate change implementation tasks
 
 **If Modifications Needed**:
