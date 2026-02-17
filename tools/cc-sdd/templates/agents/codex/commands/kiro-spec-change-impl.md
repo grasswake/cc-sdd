@@ -9,6 +9,7 @@ arguments:
 # Change Implementation Executor
 
 <background_information>
+
 - **Mission**: Execute change implementation tasks using TDD methodology with strong emphasis on regression prevention
 - **Success Criteria**:
   - All change tests written before implementation code
@@ -26,6 +27,7 @@ Execute change implementation tasks for feature **$1** using Test-Driven Develop
 ### Step 1: Load Context
 
 **Read all necessary context**:
+
 - `{{KIRO_DIR}}/specs/$1/spec.json` for language and metadata
 - `{{KIRO_DIR}}/specs/$1/change-request.md` for change details
 - `{{KIRO_DIR}}/specs/$1/change-design.md` for change design (including integrated requirements/design)
@@ -35,18 +37,21 @@ Execute change implementation tasks for feature **$1** using Test-Driven Develop
 - **Entire `{{KIRO_DIR}}/steering/` directory** for complete project memory
 
 **Validate preconditions**:
+
 - `change.active` must be `true` in spec.json
 - `change.approvals.change_tasks.approved` must be `true`
 
 ### Step 2: Select Tasks
 
 **Determine which tasks to execute**:
+
 - If `$2` provided: Execute specified change task numbers (e.g., "C1.1" or "C1,C2,C3")
 - Otherwise: Execute all pending change tasks (unchecked `- [ ]` in change-tasks.md)
 
 ### Step 3: Run Existing Test Suite (Baseline)
 
 **Before any changes, establish regression baseline**:
+
 - Run the full existing test suite
 - Record baseline results (all passing tests)
 - If existing tests are failing, stop and report: "Existing test failures must be fixed before implementing changes"
@@ -83,11 +88,13 @@ For each selected change task:
 ### Step 5: Update Metadata
 
 After completing tasks:
+
 - If tasks remain: Set `change.phase: "change-implementing"`
 - If all tasks complete: Set `change.phase: "change-complete"`
 - Update `updated_at` timestamp
 
 ## Critical Constraints
+
 - **TDD Mandatory**: Tests MUST be written before implementation code
 - **Regression Zero-Tolerance**: Any regression must be fixed before proceeding to next task
 - **Change Scope Only**: Implement only what change tasks require
@@ -95,16 +102,19 @@ After completing tasks:
 - **Full Test Suite After Each Task**: Run complete test suite, not just new tests
 
 ### Language Reminder
+
 - Markdown prompt content must remain in English, even when spec.json requests another language. The generated code and test files should follow the project's language conventions.
 </instructions>
 
 ## Tool Guidance
+
 - **Read first**: Load all context before implementation
 - **Test first**: Write tests before code
 - **Bash for tests**: Run test suite after each task completion
 - Use **WebSearch/WebFetch** for library documentation when needed
 
 ## Output Description
+
 Provide brief summary in the language specified in spec.json:
 
 1. **Tasks Executed**: Task numbers and test results
@@ -118,31 +128,37 @@ Provide brief summary in the language specified in spec.json:
 ### Error Scenarios
 
 **Change Tasks Not Approved or Missing**:
+
 - **Stop Execution**: All change spec files must exist and tasks must be approved
 - **Suggested Action**: "Complete previous change phases: `/prompts:kiro-spec-change`, `/prompts:kiro-spec-change-design`, `/prompts:kiro-spec-change-tasks`"
 
 **Existing Test Failures (Pre-Change)**:
+
 - **Stop Execution**: Cannot implement changes on a broken baseline
 - **Action**: Fix existing failures first
 
 **Regression Detected**:
+
 - **Stop Current Task**: Fix regression before continuing
 - **Action**: Debug root cause, fix, verify all tests pass
 
 **Test Failures in New Tests**:
+
 - **Stop Implementation**: Fix failing tests before continuing
 - **Action**: Debug and fix, then re-run
 
 ### Next Phase: Archive or Validate
 
 **After All Change Tasks Complete**:
+
 - **Optional**: Run `/prompts:kiro-validate-change-impl $1` to validate change implementation
 - Then: Run `/prompts:kiro-spec-archive-change $1` to archive change files and update originals
 
 **Execute specific task(s)**:
+
 - `/prompts:kiro-spec-change-impl $1 C1.1` - Single task
 - `/prompts:kiro-spec-change-impl $1 C1,C2` - Multiple tasks
 
 **Execute all pending**:
-- `/prompts:kiro-spec-change-impl $1` - All unchecked change tasks
 
+- `/prompts:kiro-spec-change-impl $1` - All unchecked change tasks

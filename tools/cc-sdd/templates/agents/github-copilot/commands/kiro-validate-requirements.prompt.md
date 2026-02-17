@@ -1,7 +1,8 @@
 ---
-agent: 'agent'
+agent: "agent"
 description: Validate requirements for completeness and quality
 ---
+
 <meta>
 description: Validate requirements for completeness and quality
 argument-hint: <feature-name:$1>
@@ -10,6 +11,7 @@ argument-hint: <feature-name:$1>
 # Requirements Validation
 
 <background_information>
+
 - **Mission**: Verify that requirements are complete, testable, consistent, and follow EARS format
 - **Success Criteria**:
   - All requirements follow EARS syntax with proper patterns
@@ -18,7 +20,7 @@ argument-hint: <feature-name:$1>
   - Steering alignment confirmed
   - Numeric IDs properly assigned
   - Clear GO/NO-GO decision with maximum 3 critical issues
-</background_information>
+    </background_information>
 
 <instructions>
 ## Core Task
@@ -73,21 +75,25 @@ Validate requirements for feature **$1** against EARS rules, steering context, a
    - Use language specified in spec.json
 
 ## Important Constraints
+
 - **Quality assurance, not perfection seeking**: Accept acceptable risk
 - **Critical focus only**: Maximum 3 issues that significantly impact success
 - **Actionable feedback**: All suggestions must be implementable
 - **No rewrites**: Validate and report, do not modify requirements.md
 
 ### Language Reminder
+
 - Markdown prompt content must remain in English, even when spec.json requests another language for validation output. The validation output should use the spec language.
-</instructions>
+  </instructions>
 
 ## Tool Guidance
+
 - **Read first**: Load all context before validation
 - **Grep**: Search for pattern compliance, verify steering alignment
 - **Interactive**: Engage with user on findings
 
 ## Output Description
+
 Provide output in the language specified in spec.json with:
 
 1. **Validation Summary**: Brief overview (2-3 sentences) of requirements quality
@@ -101,6 +107,7 @@ Provide output in the language specified in spec.json with:
 ## Safety & Fallback
 
 ### Error Scenarios
+
 - **Missing Requirements**: If requirements.md doesn't exist, stop: "Run `/kiro-spec-requirements $1` first"
 - **No Project Description**: If requirements.md lacks content, stop: "Requirements not yet generated"
 - **Empty Steering Directory**: Warn that project context is missing and may affect validation quality
@@ -109,11 +116,13 @@ Provide output in the language specified in spec.json with:
 ### Next Phase
 
 **If GO**:
+
 - Requirements validated and ready for design
 - **Optional**: Run `/kiro-validate-gap $1` for implementation gap analysis (brownfield projects)
 - Then: Run `/kiro-spec-design $1 -y` to proceed to design phase
 
 **If NO-GO**:
+
 - Address critical issues identified
 - Re-run `/kiro-spec-requirements $1` with improvements
 - Re-validate with `/kiro-validate-requirements $1`

@@ -9,6 +9,7 @@ arguments:
 # Change Design Generator
 
 <background_information>
+
 - **Mission**: Generate a change design document that includes integrated (post-change) versions of both requirements and design, plus delta analysis
 - **Success Criteria**:
   - All change request items mapped to design changes
@@ -27,6 +28,7 @@ Generate change design document for feature **$1** based on an approved change r
 ### Step 1: Load Context
 
 **Read all necessary context**:
+
 - `{{KIRO_DIR}}/specs/$1/spec.json` for language and metadata
 - `{{KIRO_DIR}}/specs/$1/change-request.md` for change details
 - `{{KIRO_DIR}}/specs/$1/requirements.md` for current requirements
@@ -35,6 +37,7 @@ Generate change design document for feature **$1** based on an approved change r
 - **Entire `{{KIRO_DIR}}/steering/` directory** for complete project memory
 
 **Validate preconditions**:
+
 - `change.active` must be `true` in spec.json
 - `change.phase` must be `"change-request-generated"`
 - If `-y` flag provided ($2 == "-y"): Auto-approve change request
@@ -49,10 +52,12 @@ Generate change design document for feature **$1** based on an approved change r
 ### Step 3: Discovery & Analysis
 
 **Classify change complexity**:
+
 - **Light Discovery**: Simple modifications, UI changes, parameter adjustments
 - **Full Discovery**: New integrations, architectural changes, new dependencies
 
 **Execute appropriate discovery**:
+
 - For complex changes: Read `{{KIRO_DIR}}/settings/rules/design-discovery-full.md`
 - For simple changes: Read `{{KIRO_DIR}}/settings/rules/design-discovery-light.md`
 - Analyze affected codebase areas with Grep
@@ -86,12 +91,14 @@ Use language specified in spec.json.
 ### Step 5: Update Metadata
 
 Update spec.json:
+
 - Set `change.phase: "change-design-generated"`
 - Set `change.approvals.change_design.generated: true`
 - If `-y` flag: Set `change.approvals.change_request.approved: true`
 - Update `updated_at` timestamp
 
 ## Critical Constraints
+
 - **Integrated documents must be complete**: They will replace originals during archive
 - **Type Safety**: Follow the same type safety rules as spec-design (no `any` in TypeScript, etc.)
 - **Markers are mandatory**: Every change must have a CR marker for traceability
@@ -99,16 +106,19 @@ Update spec.json:
 - **Requirements Traceability IDs**: Use numeric requirement IDs only, matching requirements.md
 
 ### Language Reminder
+
 - Markdown prompt content must remain in English, even when spec.json requests another language for design output. The generated change-design.md should use the spec language.
 </instructions>
 
 ## Tool Guidance
+
 - **Read first**: Load all context before generation
 - **Research when uncertain**: Use WebSearch/WebFetch for external dependencies
 - **Grep**: Analyze existing codebase patterns and integration points
 - **Write last**: Generate change-design.md only after all analysis complete
 
 ## Output Description
+
 Provide brief summary in the language specified in spec.json:
 
 1. **Status**: Confirm change design generated at `{{KIRO_DIR}}/specs/$1/change-design.md`
@@ -123,18 +133,22 @@ Provide brief summary in the language specified in spec.json:
 ### Error Scenarios
 
 **No Active Change**:
+
 - **Stop Execution**: `change.active` must be `true`
 - **Suggested Action**: "Run `/prompts:kiro-spec-change $1 \"description\"` to create a change request first"
 
 **Change Request Not Approved**:
+
 - **Stop Execution**: Cannot proceed without approved change request
 - **Suggested Action**: "Run `/prompts:kiro-spec-change-design $1 -y` to auto-approve and proceed"
 
 **Missing Requirements or Design**:
+
 - **Stop Execution**: Both documents must exist
 - **Suggested Action**: "Complete original specification first"
 
 **Template/Rules Missing**:
+
 - **Fallback**: Use inline basic structure with warning
 
 **Language Undefined**: Default to English (`en`)
@@ -142,11 +156,13 @@ Provide brief summary in the language specified in spec.json:
 ### Next Phase: Change Tasks
 
 **If Change Design Approved**:
+
 - Review generated change design at `{{KIRO_DIR}}/specs/$1/change-design.md`
 - **Optional**: Run `/prompts:kiro-validate-change-design $1` for quality review
 - Then `/prompts:kiro-spec-change-tasks $1` to generate change implementation tasks
 
 **If Modifications Needed**:
+
 - Provide feedback and re-run `/prompts:kiro-spec-change-design $1`
 
 **Note**: Change design approval is recommended before proceeding to change tasks.

@@ -9,6 +9,7 @@ arguments:
 # Change Request Generator
 
 <background_information>
+
 - **Mission**: Generate a structured change request document that captures what needs to change in an existing specification, why, and what areas are impacted
 - **Success Criteria**:
   - Change request clearly describes current vs. changed behavior
@@ -26,12 +27,14 @@ Generate a change request document for feature **$1** based on the change specif
 ### Step 1: Load Context
 
 **Read all necessary context**:
+
 - `{{KIRO_DIR}}/specs/$1/spec.json` for language and metadata
 - `{{KIRO_DIR}}/specs/$1/requirements.md` for current requirements
 - `{{KIRO_DIR}}/specs/$1/design.md` for current design
 - **Entire `{{KIRO_DIR}}/steering/` directory** for complete project memory
 
 **Validate preconditions**:
+
 - Feature must exist with completed implementation (tasks approved)
 - No active change already in progress (`change.active` must not be `true` in spec.json)
 
@@ -56,6 +59,7 @@ Generate a change request document for feature **$1** based on the change specif
 ### Step 5: Generate Change Request
 
 Using the template structure, create `{{KIRO_DIR}}/specs/$1/change-request.md`:
+
 - **Change Overview**: Purpose and background from the change specification
 - **Change Details**: Current vs. changed behavior for each modification
 - **New Requirements**: In EARS format with numeric IDs continuing from existing
@@ -68,6 +72,7 @@ Use language specified in spec.json.
 ### Step 6: Update Metadata
 
 Update spec.json with `change` section:
+
 ```json
 {
   "change": {
@@ -83,25 +88,30 @@ Update spec.json with `change` section:
   }
 }
 ```
+
 Update `updated_at` timestamp.
 
 ## Important Constraints
+
 - Do NOT modify requirements.md or design.md at this stage
 - New requirements must use EARS format and numeric IDs
 - Impact analysis must be comprehensive (both affected AND unaffected)
 - Change request is a proposal document, not yet integrated
 
 ### Language Reminder
+
 - Markdown prompt content must remain in English, even when spec.json requests another language for design output. The generated change-request.md should use the spec language.
 </instructions>
 
 ## Tool Guidance
+
 - **Read first**: Load all context (spec, steering, rules, templates) before generation
 - **Grep**: Analyze codebase for affected components
 - **Write last**: Create change-request.md only after complete analysis
 - Use **WebSearch/WebFetch** only if external domain knowledge needed
 
 ## Output Description
+
 Provide output in the language specified in spec.json with:
 
 1. **Change Request Summary**: CR number, purpose, scope (3-5 bullets)
@@ -114,6 +124,7 @@ Provide output in the language specified in spec.json with:
 ## Safety & Fallback
 
 ### Error Scenarios
+
 - **Feature Not Found**: If spec directory doesn't exist, stop with message: "No spec found for `$1`. Run `/prompts:kiro-spec-init` first."
 - **Active Change Exists**: If `change.active` is `true`, stop with message: "Active change CR-N already in progress. Complete or archive it first with `/prompts:kiro-spec-archive-change $1`."
 - **Missing Change Specification**: If `$2` is empty, ask user to describe the desired change
@@ -123,11 +134,13 @@ Provide output in the language specified in spec.json with:
 ### Next Phase: Change Design
 
 **If Change Request Approved**:
+
 - Review generated change request at `{{KIRO_DIR}}/specs/$1/change-request.md`
 - **Optional**: Run `/prompts:kiro-validate-change $1` for change request validation
 - Then `/prompts:kiro-spec-change-design $1` to generate change design with integrated requirements/design
 
 **If Modifications Needed**:
+
 - Provide feedback and re-run `/prompts:kiro-spec-change $1 "updated specification"`
 
 **Note**: Change request approval is recommended before proceeding to change design.

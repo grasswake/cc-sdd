@@ -7,6 +7,7 @@ argument-hint: <feature-name> [task-numbers]
 # Change Implementation Validation
 
 ## Parse Arguments
+
 - Feature name: `$1` (required)
 - Task numbers: `$2` (optional)
 
@@ -15,10 +16,12 @@ argument-hint: <feature-name> [task-numbers]
 **Perform detection before invoking Subagent**:
 
 **If no task arguments** (`$2` empty):
+
 - Detect all completed change tasks `[x]` in `{{KIRO_DIR}}/specs/$1/change-tasks.md`
 - Pass feature and detected tasks to Subagent
 
 **If task numbers provided** (`$2` present):
+
 - Pass directly to Subagent without detection
 
 ## Invoke Subagent
@@ -52,9 +55,11 @@ Show Subagent summary to user, then provide next step guidance:
 ### Next Steps
 
 **If GO**:
+
 - Run `/kiro:spec-archive-change $1` to archive change and update original specs
 
 **If NO-GO**:
+
 - Address critical issues (especially regressions)
 - Re-run `/kiro:spec-change-impl $1 [tasks]` for fixes
 - Re-validate with `/kiro:validate-change-impl $1`
