@@ -33,6 +33,23 @@ Kiro-style Spec Driven Development implementation on AI-DLC (AI Development Life
   - `/kiro-validate-impl {feature}` (optional: after implementation)
 - Progress check: `/kiro-spec-status {feature}` (use anytime)
 
+### Change Management Workflow
+
+For modifying existing, implemented specifications:
+
+- `/kiro-spec-change {feature} "change description"` - Create change request
+  - `/kiro-spec-validate-change {feature}` (optional: validate change request)
+- `/kiro-spec-change-design {feature} [-y]` - Generate change design with integrated specs
+  - `/kiro-spec-validate-change-design {feature}` (optional: validate change design)
+- `/kiro-spec-change-tasks {feature} [-y] [--sequential]` - Generate change tasks (C-prefix)
+- `/kiro-spec-change-impl {feature} [tasks]` - Implement changes with TDD + regression focus
+  - `/kiro-spec-validate-change-impl {feature}` (optional: validate change implementation)
+- `/kiro-spec-archive-change {feature}` - Archive change files and update original specs
+
+### Requirements Validation (New Development)
+
+- `/kiro-spec-validate-requirements {feature}` (optional: after requirements, before design)
+
 ## Development Rules
 - 3-phase approval workflow: Requirements → Design → Tasks → Implementation
 - Human review required each phase; use `-y` only for intentional fast-track

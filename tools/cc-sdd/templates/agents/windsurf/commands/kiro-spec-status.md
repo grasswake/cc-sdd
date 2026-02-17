@@ -35,6 +35,15 @@ Generate status report for feature **$1** showing progress across all phases.
 - **Design**: Check for architecture, components, diagrams
 - **Tasks**: Count completed vs total tasks (parse `- [x]` vs `- [ ]`)
 - **Approvals**: Check approval status in spec.json
+**Check for active change**:
+- If `change` section exists in spec.json and `change.active` is `true`:
+  - Report change number (CR-NNN) and current change phase
+  - Check change approval status (change_request, change_design, change_tasks)
+  - If change-tasks.md exists: Count completed vs total change tasks
+  - Show change workflow progress
+- If `change` section exists but `change.active` is `false`:
+  - Report last completed change number
+  - Check for archived changes in `archives/` directory
 
 ### Step 3: Generate Report
 
@@ -42,8 +51,9 @@ Create report in the language specified in spec.json covering:
 1. **Current Phase & Progress**: Where the spec is in the workflow
 2. **Completion Status**: Percentage complete for each phase
 3. **Task Breakdown**: If tasks exist, show completed/remaining counts
-4. **Next Actions**: What needs to be done next
-5. **Blockers**: Any issues preventing progress
+4. **Change Status**: If active change, show change phase and progress
+5. **Next Actions**: What needs to be done next
+6. **Blockers**: Any issues preventing progress
 
 ## Critical Constraints
 - Use language from spec.json
@@ -64,8 +74,9 @@ Provide status report in the language specified in spec.json:
 1. **Feature Overview**: Name, phase, last updated
 2. **Phase Status**: Requirements, Design, Tasks with completion %
 3. **Task Progress**: If tasks exist, show X/Y completed
-4. **Next Action**: Specific command to run next
-5. **Issues**: Any blockers or missing elements
+4. **Change Status**: If active change, show CR-NNN phase and change task progress
+5. **Next Action**: Specific command to run next
+6. **Issues**: Any blockers or missing elements
 
 **Format**: Clear, scannable format with emojis (✅/⏳/❌) for status
 

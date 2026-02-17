@@ -40,6 +40,23 @@ Project memory keeps persistent guidance (steering, specs notes, component docs)
   - `/prompts:kiro-validate-impl {feature}` (optional: after implementation)
 - Progress check: `/prompts:kiro-spec-status {feature}` (use anytime)
 
+### Change Management Workflow
+
+For modifying existing, implemented specifications:
+
+- `/prompts:kiro-spec-change {feature} "change description"` - Create change request
+  - `/prompts:kiro-spec-validate-change {feature}` (optional: validate change request)
+- `/prompts:kiro-spec-change-design {feature} [-y]` - Generate change design with integrated specs
+  - `/prompts:kiro-spec-validate-change-design {feature}` (optional: validate change design)
+- `/prompts:kiro-spec-change-tasks {feature} [-y] [--sequential]` - Generate change tasks (C-prefix)
+- `/prompts:kiro-spec-change-impl {feature} [tasks]` - Implement changes with TDD + regression focus
+  - `/prompts:kiro-spec-validate-change-impl {feature}` (optional: validate change implementation)
+- `/prompts:kiro-spec-archive-change {feature}` - Archive change files and update original specs
+
+### Requirements Validation (New Development)
+
+- `/prompts:kiro-spec-validate-requirements {feature}` (optional: after requirements, before design)
+
 ## Development Rules
 - 3-phase approval workflow: Requirements → Design → Tasks → Implementation
 - Human review required each phase; use `-y` only for intentional fast-track

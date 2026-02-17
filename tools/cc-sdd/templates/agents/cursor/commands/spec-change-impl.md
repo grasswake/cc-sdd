@@ -1,0 +1,147 @@
+<meta>
+description: Execute change tasks using TDD with regression focus
+argument-hint: <feature-name:$1> [task-numbers:$2]
+</meta>
+
+# Change Implementation Executor
+
+<background_information>
+- **Mission**: Execute change implementation tasks using TDD methodology with strong emphasis on regression prevention
+- **Success Criteria**:
+  - All change tests written before implementation code
+  - Existing tests continue to pass (no regressions)
+  - Change tasks marked as completed in change-tasks.md
+  - Implementation aligns with change design and integrated specifications
+</background_information>
+
+<instructions>
+## Core Task
+Execute change implementation tasks for feature **$1** using Test-Driven Development with regression focus.
+
+## Execution Steps
+
+### Step 1: Load Context
+
+**Read all necessary context**:
+- `{{KIRO_DIR}}/specs/$1/spec.json` for language and metadata
+- `{{KIRO_DIR}}/specs/$1/change-request.md` for change details
+- `{{KIRO_DIR}}/specs/$1/change-design.md` for change design (including integrated requirements/design)
+- `{{KIRO_DIR}}/specs/$1/change-tasks.md` for change task list
+- `{{KIRO_DIR}}/specs/$1/requirements.md` for original requirements (reference)
+- `{{KIRO_DIR}}/specs/$1/design.md` for original design (reference)
+- **Entire `{{KIRO_DIR}}/steering/` directory** for complete project memory
+
+**Validate preconditions**:
+- `change.active` must be `true` in spec.json
+- `change.approvals.change_tasks.approved` must be `true`
+
+### Step 2: Select Tasks
+
+**Determine which tasks to execute**:
+- If `$2` provided: Execute specified change task numbers (e.g., "C1.1" or "C1,C2,C3")
+- Otherwise: Execute all pending change tasks (unchecked `- [ ]` in change-tasks.md)
+
+### Step 3: Run Existing Test Suite (Baseline)
+
+**Before any changes, establish regression baseline**:
+- Run the full existing test suite
+- Record baseline results (all passing tests)
+- If existing tests are failing, stop and report: "Existing test failures must be fixed before implementing changes"
+
+### Step 4: Execute with TDD + Regression Focus
+
+For each selected change task:
+
+1. **RED - Write Failing Test**:
+   - Write test for the change functionality
+   - For modified requirements: Write test reflecting new behavior
+   - For new requirements: Write new test
+   - For removed requirements: Plan test removal (after verifying no other coverage dependency)
+   - Test should fail (change not implemented yet)
+
+2. **GREEN - Write Minimal Code**:
+   - Implement simplest solution to make test pass
+   - Follow the integrated design from change-design.md
+   - Focus only on making THIS test pass
+
+3. **REFACTOR - Clean Up**:
+   - Improve code structure
+   - Remove duplication
+   - Ensure alignment with integrated design
+
+4. **VERIFY - Regression Check**:
+   - Run ALL tests (new and existing)
+   - Verify no regressions from baseline
+   - If regression detected: Fix immediately before proceeding
+
+5. **MARK COMPLETE**:
+   - Update checkbox from `- [ ]` to `- [x]` in change-tasks.md
+
+### Step 5: Update Metadata
+
+After completing tasks:
+- If tasks remain: Set `change.phase: "change-implementing"`
+- If all tasks complete: Set `change.phase: "change-complete"`
+- Update `updated_at` timestamp
+
+## Critical Constraints
+- **TDD Mandatory**: Tests MUST be written before implementation code
+- **Regression Zero-Tolerance**: Any regression must be fixed before proceeding to next task
+- **Change Scope Only**: Implement only what change tasks require
+- **Integrated Design Authority**: change-design.md is the source of truth for implementation
+- **Full Test Suite After Each Task**: Run complete test suite, not just new tests
+
+### Language Reminder
+- Markdown prompt content must remain in English, even when spec.json requests another language. The generated code and test files should follow the project's language conventions.
+</instructions>
+
+## Tool Guidance
+- **Read first**: Load all context before implementation
+- **Test first**: Write tests before code
+- **Bash for tests**: Run test suite after each task completion
+- Use **WebSearch/WebFetch** for library documentation when needed
+
+## Output Description
+
+Provide brief summary in the language specified in spec.json:
+
+1. **Tasks Executed**: Task numbers and test results
+2. **Regression Status**: Full test suite results (pass count, any regressions)
+3. **Status**: Completed tasks marked in change-tasks.md, remaining count
+
+**Format**: Concise (under 150 words)
+
+## Safety & Fallback
+
+### Error Scenarios
+
+**Change Tasks Not Approved or Missing**:
+- **Stop Execution**: All change spec files must exist and tasks must be approved
+- **Suggested Action**: "Complete previous change phases: `/kiro/spec-change`, `/kiro/spec-change-design`, `/kiro/spec-change-tasks`"
+
+**Existing Test Failures (Pre-Change)**:
+- **Stop Execution**: Cannot implement changes on a broken baseline
+- **Action**: Fix existing failures first
+
+**Regression Detected**:
+- **Stop Current Task**: Fix regression before continuing
+- **Action**: Debug root cause, fix, verify all tests pass
+
+**Test Failures in New Tests**:
+- **Stop Implementation**: Fix failing tests before continuing
+- **Action**: Debug and fix, then re-run
+
+### Next Phase: Archive or Validate
+
+**After All Change Tasks Complete**:
+- **Optional**: Run `/kiro/spec-validate-change-impl $1` to validate change implementation
+- Then: Run `/kiro/spec-archive-change $1` to archive change files and update originals
+
+**Execute specific task(s)**:
+- `/kiro/spec-change-impl $1 C1.1` - Single task
+- `/kiro/spec-change-impl $1 C1,C2` - Multiple tasks
+
+**Execute all pending**:
+- `/kiro/spec-change-impl $1` - All unchecked change tasks
+
+

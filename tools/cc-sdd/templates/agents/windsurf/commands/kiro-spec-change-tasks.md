@@ -1,0 +1,145 @@
+---
+description: Generate change implementation tasks
+auto_execution_mode: 3
+---
+<meta>
+description: Generate change implementation tasks
+argument-hint: <feature-name:$1> [-y:$2] [--sequential:$3]
+</meta>
+
+# Change Tasks Generator
+
+<background_information>
+- **Mission**: Generate implementation tasks specifically for change request items, including regression prevention tasks
+- **Success Criteria**:
+  - All change items mapped to specific tasks with C-prefix numbering
+  - Regression prevention tasks included for affected components
+  - Tasks properly sized (1-3 hours each)
+  - Original tasks.md is NOT modified
+</background_information>
+
+<instructions>
+## Core Task
+Generate change implementation tasks for feature **$1** based on approved change design.
+
+## Execution Steps
+
+### Step 1: Load Context
+
+**Read all necessary context**:
+- `{{KIRO_DIR}}/specs/$1/spec.json` for language and metadata
+- `{{KIRO_DIR}}/specs/$1/change-request.md` for change details
+- `{{KIRO_DIR}}/specs/$1/change-design.md` for change design (including integrated requirements/design)
+- `{{KIRO_DIR}}/specs/$1/tasks.md` for reference (existing tasks, read-only)
+- **Entire `{{KIRO_DIR}}/steering/` directory** for complete project memory
+
+**Validate preconditions**:
+- `change.active` must be `true` in spec.json
+- `change.phase` must be `"change-design-generated"`
+- If `-y` flag provided ($2 == "-y"): Auto-approve change design
+- Otherwise: Verify `change.approvals.change_design.approved` is `true`
+- Determine sequential mode: `sequential = ($3 == "--sequential")`
+
+### Step 2: Read Guidelines
+
+- Read `{{KIRO_DIR}}/settings/rules/tasks-generation.md` for task generation principles
+- If `sequential == false`: Read `{{KIRO_DIR}}/settings/rules/tasks-parallel-analysis.md` for parallel criteria
+- Read `{{KIRO_DIR}}/settings/templates/specs/change-tasks.md` for format
+
+### Step 3: Generate Change Tasks
+
+**Generate task list for changes only**:
+- Use `C` prefix for all task numbers (C1, C1.1, C2, etc.)
+- Map each change item from change-request.md to specific tasks
+- Include tasks for:
+  - Modified requirements: Update existing implementation
+  - New requirements: Implement new functionality
+  - Removed requirements: Remove code and tests
+  - Design changes: Refactor architecture as needed
+- Apply `(P)` markers for parallelizable tasks (skip markers when `sequential == true`)
+- Each task references the relevant requirement IDs and change type
+- Use language specified in spec.json
+
+**Generate regression prevention tasks**:
+- For each affected component, add verification tasks
+- Include tasks to verify existing tests still pass
+- Add integration test tasks for changed boundaries
+- Reference original task numbers for traceability
+
+**Do NOT regenerate or modify original tasks.md**. Change tasks are a separate document.
+
+### Step 4: Finalize
+
+**Write and update**:
+- Create `{{KIRO_DIR}}/specs/$1/change-tasks.md`
+- Update spec.json metadata:
+  - Set `change.phase: "change-tasks-generated"`
+  - Set `change.approvals.change_tasks.generated: true, approved: false`
+  - If `-y` flag: Set `change.approvals.change_design.approved: true`
+  - Update `updated_at` timestamp
+
+## Critical Constraints
+- **C-prefix mandatory**: All change tasks use C1, C1.1, C2 numbering
+- **Change scope only**: Do NOT include tasks for unchanged functionality
+- **Regression tasks mandatory**: Every affected component needs a verification task
+- **Maximum 2 Levels**: Major tasks and sub-tasks only (no deeper nesting)
+- **Original tasks untouched**: tasks.md is reference-only
+
+### Language Reminder
+- Markdown prompt content must remain in English, even when spec.json requests another language. The generated change-tasks.md should use the spec language.
+</instructions>
+
+## Tool Guidance
+- **Read first**: Load all context, rules, and templates before generation
+- **Grep**: Analyze codebase to understand affected areas for regression tasks
+- **Write last**: Generate change-tasks.md only after complete analysis
+
+## Output Description
+Provide brief summary in the language specified in spec.json:
+
+1. **Status**: Confirm tasks generated at `{{KIRO_DIR}}/specs/$1/change-tasks.md`
+2. **Task Summary**:
+   - Total: X change tasks, Y regression tasks
+   - All change items covered
+3. **Quality Validation**:
+   - All change items mapped to tasks
+   - Regression prevention tasks included
+4. **Next Action**: Review tasks and proceed when ready
+
+**Format**: Concise (under 200 words)
+
+## Safety & Fallback
+
+### Error Scenarios
+
+**No Active Change or Wrong Phase**:
+- **Stop Execution**: Change must be active and in design-generated phase
+- **Suggested Action**: "Complete previous change phases first"
+
+**Change Design Not Approved**:
+- **Stop Execution**: Cannot proceed without approved change design
+- **Suggested Action**: "Run `/kiro-spec-change-tasks $1 -y` to auto-approve and proceed"
+
+**Missing Change Documents**:
+- **Stop Execution**: change-request.md and change-design.md must exist
+- **Suggested Action**: "Run `/kiro-spec-change $1` and `/kiro-spec-change-design $1` first"
+
+**Template/Rules Missing**:
+- **Fallback**: Use inline basic structure with warning
+
+**Language Undefined**: Default to English (`en`)
+
+### Next Phase: Change Implementation
+
+**Before Starting Implementation**:
+- **IMPORTANT**: Clear conversation history and free up context before running `/kiro-spec-change-impl`
+
+**If Change Tasks Approved**:
+- Execute specific task: `/kiro-spec-change-impl $1 C1.1`
+- Execute multiple: `/kiro-spec-change-impl $1 C1,C2`
+- Execute all: `/kiro-spec-change-impl $1`
+
+**If Modifications Needed**:
+- Provide feedback and re-run `/kiro-spec-change-tasks $1`
+
+**Note**: Change task approval is recommended before implementation.
