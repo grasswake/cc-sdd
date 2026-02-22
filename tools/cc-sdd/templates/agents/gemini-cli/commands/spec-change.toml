@@ -58,12 +58,27 @@ Generate a change request document for feature **$1** based on the change specif
 Using the template structure, create `{{KIRO_DIR}}/specs/$1/change-request.md`:
 - **Change Overview**: Purpose and background from the change specification
 - **Change Details**: Current vs. changed behavior for each modification
-- **New Requirements**: In EARS format with numeric IDs continuing from existing
+  - The "Current" and "After Change" columns **MUST** use EARS format (see below)
+- **New Requirements**: **MUST** use EARS format with numeric IDs continuing from existing
 - **Removed Requirements**: With removal rationale
 - **Impact Analysis**: Affected components with impact type, unaffected components with rationale
 - **Change Rationale**: Overall justification
 
-Use language specified in spec.json.
+**EARS Format — mandatory for ALL requirement descriptions in this document**:
+
+Every requirement in "Modified Requirements" (both Current and After Change columns) and "New Requirements" (Description column) MUST follow one of these EARS patterns:
+
+- Event-Driven: `When [event], the [system] shall [response/action]`
+- State-Driven: `While [precondition], the [system] shall [response/action]`
+- Unwanted Behavior: `If [trigger], the [system] shall [response/action]`
+- Optional Feature: `Where [feature is included], the [system] shall [response/action]`
+- Ubiquitous: `The [system] shall [response/action]`
+- Combined: `While [precondition], when [event], the [system] shall [response/action]`
+
+**CORRECT**: "When user clicks the export button, the Report Service shall generate a PDF file"
+**WRONG**: "Export feature added" / "Support PDF export" / "Users can export reports"
+
+Use language specified in spec.json (localize the variable parts, keep EARS keywords in English).
 
 ### Step 6: Update Metadata
 
@@ -87,7 +102,9 @@ Update `updated_at` timestamp.
 
 ## Important Constraints
 - Do NOT modify requirements.md or design.md at this stage
-- New requirements must use EARS format and numeric IDs
+- **ALL requirement descriptions (modified and new) MUST use EARS format** — each must match: `When/While/If/Where [condition], the [system] shall [action]` or `The [system] shall [action]`
+- Do NOT write plain-text summaries (e.g., "Add dark mode") as requirement descriptions — always use a full EARS statement
+- New requirements must use numeric IDs continuing from existing
 - Impact analysis must be comprehensive (both affected AND unaffected)
 - Change request is a proposal document, not yet integrated
 

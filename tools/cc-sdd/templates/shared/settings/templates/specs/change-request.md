@@ -12,17 +12,23 @@
 
 ### Modified Requirements
 
-| # | Requirement ID | Current | After Change | Reason |
-|---|---------------|---------|-------------|--------|
-| 1 | {{REQ_ID}} | {{CURRENT_BEHAVIOR}} | {{NEW_BEHAVIOR}} | {{REASON}} |
+> Both "Current (EARS)" and "After Change (EARS)" columns MUST use EARS syntax.
+> EARS patterns: `When [event]` / `While [precondition]` / `If [trigger]` / `Where [feature]` + `, the [system] shall [action]` — or `The [system] shall [action]` for ubiquitous requirements.
+> Do NOT write plain-text summaries. Always use a full EARS statement.
+
+| # | Requirement ID | Current (EARS) | After Change (EARS) | Reason |
+|---|---------------|----------------|---------------------|--------|
+| 1 | {{REQ_ID}} | When [event], the [system] shall [current action] | When [event], the [system] shall [changed action] | {{REASON}} |
 
 ### New Requirements
 
-> Use EARS format for all new requirements. Assign numeric IDs continuing from existing requirements.
+> ALL new requirement descriptions MUST use EARS format. Assign numeric IDs continuing from existing requirements.
+> EARS patterns: `When [event]` / `While [precondition]` / `If [trigger]` / `Where [feature]` + `, the [system] shall [action]` — or `The [system] shall [action]` for ubiquitous requirements.
+> Do NOT write plain-text summaries (e.g., "Add dark mode support"). Always use a full EARS statement.
 
 | # | Requirement ID | Description (EARS) | Rationale |
-|---|---------------|-------------------|-----------|
-| 1 | {{NEW_REQ_ID}} | {{EARS_STATEMENT}} | {{RATIONALE}} |
+|---|---------------|-------------------|----------|
+| 1 | {{NEW_REQ_ID}} | When [event], the [system] shall [response/action] | {{RATIONALE}} |
 
 ### Removed Requirements
 
